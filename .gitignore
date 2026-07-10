@@ -1,0 +1,30 @@
+# Dependency directories
+node_modules/
+/frontend/node_modules/
+
+# Angular build and cache directories
+/.angular/
+/frontend/.angular/
+/frontend/dist/
+
+# Environment configurations
+.env
+/backend/.env
+
+# Local development files / AI instructions
+README_FOR_AI.md
+ANTIGRAVITY_INSTRUCTIONS.md
+code_instructions.md
+CODE_INSTRUCTIONS.md
+IMPLEMENTATION_GUIDE.md
+
+# OS/IDE files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
