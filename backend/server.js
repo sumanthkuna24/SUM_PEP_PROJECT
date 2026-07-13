@@ -19,6 +19,9 @@ app.get('/', (req, res) => {
   res.send('TraceBack API is running successfully!');
 });
 
+// Authentication Routes
+app.use('/api/auth', require('./routes/auth.routes'));
+
 // Start Express Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
