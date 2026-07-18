@@ -1,0 +1,66 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <h2>Register for TraceBack</h2>
+    
+    @if (errorMessage()) {
+      <div class="alert alert-danger">{{ errorMessage() }}</div>
+    }
+    @if (successMessage()) {
+      <div class="alert alert-success">{{ successMessage() }}</div>
+    }
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" formControlName="name" placeholder="Enter your full name" />
+        @if (inValid('name')) {
+          @if (f['name']?.errors?.['required']) {
+            <p class="error">Name is required</p>
+          }
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" formControlName="email" placeholder="Enter email address" />
+        @if (inValid('email')) {
+          @if (f['email']?.errors?.['required']) {
+            <p class="error">Email is required</p>
+          }
+          @if (f['email']?.errors?.['email']) {
+            <p class="error">Invalid email format</p>
+          }
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input type="text" id="phone" formControlName="phone" placeholder="Enter phone number" />
+        @if (inValid('phone')) {
+          @if (f['phone']?.errors?.['required']) {
+            <p class="error">Phone number is required</p>
+          }
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" formControlName="password" placeholder="Enter password (min 6 chars)" />
+        @if (inValid('password')) {
+          @if (f['password']?.errors?.['required']) {
+            <p class="error">Password is required</p>
+          }
+          @if (f['password']?.errors?.['minlength']) {
+            <p class="error">Password must be at least 6 characters</p>
+          }
+        }
+      </div>
+
+      <button type="submit" [disabled]="registerForm.invalid">Register</button>
+    </form>
+
+    <p class="auth-footer">
+      Already have an account? <a routerLink="/login">Login here</a>
+    </p>
+  </div>
+</div>

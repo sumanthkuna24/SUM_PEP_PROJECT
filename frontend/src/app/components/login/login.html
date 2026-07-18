@@ -1,0 +1,46 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <h2>Login to TraceBack</h2>
+    
+    @if (errorMessage()) {
+      <div class="alert alert-danger">{{ errorMessage() }}</div>
+    }
+    @if (successMessage()) {
+      <div class="alert alert-success">{{ successMessage() }}</div>
+    }
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" formControlName="email" placeholder="Enter email address" />
+        @if (inValid('email')) {
+          @if (f['email']?.errors?.['required']) {
+            <p class="error">Email is required</p>
+          }
+          @if (f['email']?.errors?.['email']) {
+            <p class="error">Invalid email format</p>
+          }
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" formControlName="password" placeholder="Enter password (min 6 chars)" />
+        @if (inValid('password')) {
+          @if (f['password']?.errors?.['required']) {
+            <p class="error">Password is required</p>
+          }
+          @if (f['password']?.errors?.['minlength']) {
+            <p class="error">Password must be at least 6 characters</p>
+          }
+        }
+      </div>
+
+      <button type="submit" [disabled]="loginForm.invalid">Login</button>
+    </form>
+
+    <p class="auth-footer">
+      Don't have an account? <a routerLink="/register">Register here</a>
+    </p>
+  </div>
+</div>

@@ -1,0 +1,15 @@
+<div class="dashboard-container">
+  <div class="dashboard-card">
+    <h2>Dashboard</h2>
+    <div class="welcome-box">
+      <p class="welcome-msg">Welcome back, <strong>{{ authService.currentUser()?.name }}</strong>!</p>
+      <div class="details">
+        <p><strong>Email:</strong> {{ authService.currentUser()?.email }}</p>
+        <p><strong>Phone:</strong> {{ authService.currentUser()?.phone }}</p>
+        <p><strong>Session:</strong> Active (Authenticated via JWT)</p>
+      </div>
+    </div>
+    
+    <button (click)="logout()" class="btn-logout">Logout</button>
+  </div>
+</div>
