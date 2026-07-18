@@ -1,0 +1,18 @@
+<div class="placeholder-container">
+  <h2>User Profile</h2>
+  <p class="placeholder-description">
+    Here are the details associated with your user account. This verification helps ensure your credentials are correctly parsed from the JWT.
+  </p>
+  
+  <div class="profile-card">
+    <div class="profile-field">
+      <strong>Full Name:</strong> <span>{{ authService.currentUser()?.name }}</span>
+    </div>
+    <div class="profile-field">
+      <strong>Email Address:</strong> <span>{{ authService.currentUser()?.email }}</span>
+    </div>
+    <div class="profile-field">
+      <strong>Phone Number:</strong> <span>{{ authService.currentUser()?.phone }}</span>
+    </div>
+  </div>
+</div>

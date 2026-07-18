@@ -1,0 +1,26 @@
+.placeholder-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.placeholder-container h2 {
+  color: #333;
+  margin-top: 0;
+}
+
+.placeholder-description {
+  color: #666;
+  font-size: 15px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.placeholder-card {
+  padding: 20px;
+  background-color: #fcf8e3;
+  border: 1px solid #faebcc;
+  color: #8a6d3b;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: bold;
+}

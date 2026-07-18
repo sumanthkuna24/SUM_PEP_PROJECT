@@ -1,0 +1,49 @@
+.placeholder-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.placeholder-container h2 {
+  color: #333;
+  margin-top: 0;
+}
+
+.placeholder-description {
+  color: #666;
+  font-size: 15px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.profile-card {
+  padding: 25px;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  max-width: 400px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.profile-field {
+  margin-bottom: 15px;
+  font-size: 15px;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #f1f1f1;
+  padding-bottom: 10px;
+}
+
+.profile-field:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.profile-field strong {
+  color: #555;
+}
+
+.profile-field span {
+  color: #333;
+  font-weight: bold;
+}

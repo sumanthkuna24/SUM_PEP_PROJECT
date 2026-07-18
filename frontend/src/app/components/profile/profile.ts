@@ -2,12 +2,12 @@ import { Component, inject } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-profile',
   standalone: true,
   imports: [],
-  templateUrl: './dashboard.html',
-  styleUrl: './dashboard.css'
+  templateUrl: './profile.html',
+  styleUrl: './profile.css'
 })
-export class Dashboard {
+export class Profile {
   public authService = inject(AuthService);
 }
