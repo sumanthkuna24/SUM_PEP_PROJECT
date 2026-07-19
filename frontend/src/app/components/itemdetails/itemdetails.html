@@ -1,0 +1,55 @@
+<div class="details-container">
+  @if (loading()) {
+    <div class="loading-state">Loading item details...</div>
+  } @else if (errorMessage()) {
+    <div class="alert alert-danger">{{ errorMessage() }}</div>
+    <div class="actions">
+      <a routerLink="/my-items" class="btn-back">Back to My Items</a>
+    </div>
+  } @else if (item()) {
+    <div class="details-card">
+      <div class="card-header">
+        <span class="badge" [class.badge-lost]="item().itemType === 'Lost'" [class.badge-found]="item().itemType === 'Found'">
+          {{ item().itemType }}
+        </span>
+        <span class="status-badge" [class.status-open]="item().status === 'Open'" [class.status-resolved]="item().status === 'Resolved'">
+          Status: {{ item().status }}
+        </span>
+      </div>
+
+      <div class="card-body">
+        <h2>{{ item().title }}</h2>
+        <hr />
+        
+        <div class="field-group">
+          <label>Description</label>
+          <p class="description-text">{{ item().description }}</p>
+        </div>
+
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="label">Category</span>
+            <span class="value">{{ item().category }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Location</span>
+            <span class="value">{{ item().location }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Date Reported</span>
+            <span class="value">{{ item().date | date:'mediumDate' }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Created At</span>
+            <span class="value">{{ item().createdAt | date:'medium' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <a routerLink="/my-items" class="btn-back">Back to My Items</a>
+        <a [routerLink]="['/items', item()._id, 'edit']" class="btn-edit">Edit Item</a>
+      </div>
+    </div>
+  }
+</div>

@@ -6,6 +6,8 @@ import { Myitems } from './components/myitems/myitems';
 import { Postitem } from './components/postitem/postitem';
 import { Claims } from './components/claims/claims';
 import { Profile } from './components/profile/profile';
+import { Itemdetails } from './components/itemdetails/itemdetails';
+import { Edititem } from './components/edititem/edititem';
 import { authGuard } from './guards/auth';
 
 export const routes: Routes = [
@@ -16,6 +18,8 @@ export const routes: Routes = [
   { path: 'post-item', component: Postitem, canActivate: [authGuard] },
   { path: 'claims', component: Claims, canActivate: [authGuard] },
   { path: 'profile', component: Profile, canActivate: [authGuard] },
+  { path: 'items/:id', component: Itemdetails, canActivate: [authGuard] },
+  { path: 'items/:id/edit', component: Edititem, canActivate: [authGuard] },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: '**', redirectTo: 'login' }
 ];

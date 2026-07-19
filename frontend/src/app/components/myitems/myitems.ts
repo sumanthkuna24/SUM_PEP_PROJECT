@@ -1,11 +1,12 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { ItemService } from '../../services/item.service';
 
 @Component({
   selector: 'app-myitems',
   standalone: true,
-  imports: [DatePipe],
+  imports: [DatePipe, RouterLink],
   templateUrl: './myitems.html',
   styleUrl: './myitems.css'
 })
@@ -32,5 +33,19 @@ export class Myitems implements OnInit {
         this.loading.set(false);
       }
     });
+  }
+
+  deleteItem(id: string) {
+    if (confirm('Are you sure you want to delete this item?')) {
+      this.itemService.deleteItem(id).subscribe({
+        next: (res) => {
+          // Update the list of items locally
+          this.items.update(prev => prev.filter(item => item._id !== id));
+        },
+        error: (err) => {
+          alert(err.error?.message || 'Error deleting item');
+        }
+      });
+    }
   }
 }

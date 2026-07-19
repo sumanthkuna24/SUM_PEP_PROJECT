@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { createItem, getMyItems, getAllOpenItems } = require('../controllers/item.controller');
+const { createItem, getMyItems, getAllOpenItems, getItemById, updateItem, deleteItem } = require('../controllers/item.controller');
 const { protect } = require('../middleware/auth.middleware');
 
 // All item routes are protected
@@ -9,5 +9,8 @@ router.use(protect);
 router.post('/', createItem);
 router.get('/my-items', getMyItems);
 router.get('/', getAllOpenItems);
+router.get('/:id', getItemById);
+router.put('/:id', updateItem);
+router.delete('/:id', deleteItem);
 
 module.exports = router;

@@ -35,6 +35,12 @@
               <p><strong>Date:</strong> {{ item.date | date:'mediumDate' }}</p>
             </div>
           </div>
+          
+          <div class="card-footer">
+            <a [routerLink]="['/items', item._id]" class="btn-action btn-view">View</a>
+            <a [routerLink]="['/items', item._id, 'edit']" class="btn-action btn-edit">Edit</a>
+            <button (click)="deleteItem(item._id)" class="btn-action btn-delete">Delete</button>
+          </div>
         </div>
       }
     </div>
