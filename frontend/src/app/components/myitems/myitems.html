@@ -1,9 +1,42 @@
-<div class="placeholder-container">
-  <h2>My Items</h2>
-  <p class="placeholder-description">
-    This page is a placeholder for your reported lost and found items. From here you will eventually see all items you have posted, manage claim requests, and view automatically suggested matches.
-  </p>
-  <div class="placeholder-card">
-    <p>🚧 Module Coming Soon (Lost & Found Item Management CRUD)</p>
+<div class="my-items-page">
+  <div class="header-section">
+    <h2>My Reported Items</h2>
+    <p>View and manage all lost and found reports you've posted on campus.</p>
   </div>
+
+  @if (loading()) {
+    <div class="loading-state">Loading your items...</div>
+  } @else if (errorMessage()) {
+    <div class="alert alert-danger">{{ errorMessage() }}</div>
+  } @else if (items().length === 0) {
+    <div class="empty-state">
+      <p>You haven't reported any items yet.</p>
+    </div>
+  } @else {
+    <div class="items-grid">
+      @for (item of items(); track item._id) {
+        <div class="item-card">
+          <div class="card-header">
+            <span class="badge" [class.badge-lost]="item.itemType === 'Lost'" [class.badge-found]="item.itemType === 'Found'">
+              {{ item.itemType }}
+            </span>
+            <span class="status-badge" [class.status-open]="item.status === 'Open'" [class.status-resolved]="item.status === 'Resolved'">
+              {{ item.status }}
+            </span>
+          </div>
+          
+          <div class="card-body">
+            <h3>{{ item.title }}</h3>
+            <p class="description">{{ item.description }}</p>
+            
+            <div class="details">
+              <p><strong>Category:</strong> {{ item.category }}</p>
+              <p><strong>Location:</strong> {{ item.location }}</p>
+              <p><strong>Date:</strong> {{ item.date | date:'mediumDate' }}</p>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  }
 </div>

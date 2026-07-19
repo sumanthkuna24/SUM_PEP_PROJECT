@@ -1,26 +1,129 @@
-.placeholder-container {
-  padding: 20px;
+.my-items-page {
   font-family: Arial, sans-serif;
 }
 
-.placeholder-container h2 {
-  color: #333;
-  margin-top: 0;
+.header-section {
+  margin-bottom: 25px;
 }
 
-.placeholder-description {
+.header-section h2 {
+  margin: 0 0 8px 0;
+  color: #333;
+}
+
+.header-section p {
+  margin: 0;
   color: #666;
   font-size: 15px;
-  line-height: 1.5;
-  margin-bottom: 20px;
 }
 
-.placeholder-card {
-  padding: 20px;
-  background-color: #fcf8e3;
-  border: 1px solid #faebcc;
-  color: #8a6d3b;
-  border-radius: 4px;
-  font-size: 14px;
+.loading-state,
+.empty-state {
+  text-align: center;
+  padding: 40px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  color: #666;
+  font-size: 16px;
+}
+
+.items-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.item-card {
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
   font-weight: bold;
+  text-transform: uppercase;
+}
+
+.badge-lost {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.badge-found {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-badge {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.status-open {
+  color: #007bff;
+}
+
+.status-resolved {
+  color: #28a745;
+}
+
+.card-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.card-body h3 {
+  margin: 0 0 10px 0;
+  color: #333;
+  font-size: 18px;
+}
+
+.card-body .description {
+  color: #666;
+  font-size: 14px;
+  line-height: 1.4;
+  margin: 0 0 15px 0;
+  flex-grow: 1;
+}
+
+.details {
+  background-color: #f8f9fa;
+  padding: 10px 15px;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+.details p {
+  margin: 6px 0;
+  color: #555;
+}
+
+.alert {
+  padding: 12px;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.alert-danger {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
 }

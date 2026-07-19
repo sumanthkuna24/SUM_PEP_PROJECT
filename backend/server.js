@@ -22,6 +22,9 @@ app.get('/', (req, res) => {
 // Authentication Routes
 app.use('/api/auth', require('./routes/auth.routes'));
 
+// Item Routes
+app.use('/api/items', require('./routes/item.routes'));
+
 // Start Express Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
