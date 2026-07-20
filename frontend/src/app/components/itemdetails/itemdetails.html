@@ -47,8 +47,10 @@
       </div>
 
       <div class="card-footer">
-        <a routerLink="/my-items" class="btn-back">Back to My Items</a>
-        <a [routerLink]="['/items', item()._id, 'edit']" class="btn-edit">Edit Item</a>
+        <a routerLink="/browse" class="btn-back">Back to Browse</a>
+        @if (item().owner === authService.currentUser()?._id) {
+          <a [routerLink]="['/items', item()._id, 'edit']" class="btn-edit">Edit Item</a>
+        }
       </div>
     </div>
   }

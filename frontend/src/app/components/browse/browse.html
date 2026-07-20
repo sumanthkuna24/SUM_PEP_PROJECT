@@ -1,0 +1,73 @@
+<div class="browse-page">
+  <div class="header-section">
+    <h2>Browse Lost & Found Items</h2>
+    <p>Search and filter active reports posted on campus.</p>
+  </div>
+
+  <!-- Search and Filter Form -->
+  <form [formGroup]="filterForm" class="filter-bar">
+    <div class="filter-group search-box">
+      <input type="text" formControlName="search" placeholder="Search by title or description..." />
+    </div>
+
+    <div class="filter-group">
+      <select formControlName="category" id="category-filter">
+        <option value="">All Categories</option>
+        <option value="Electronics">Electronics</option>
+        <option value="ID Card">ID Card</option>
+        <option value="Keys">Keys</option>
+        <option value="Bag">Bag</option>
+        <option value="Books/Documents">Books/Documents</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <select formControlName="itemType" id="type-filter">
+        <option value="">All Types</option>
+        <option value="Lost">Lost</option>
+        <option value="Found">Found</option>
+      </select>
+    </div>
+  </form>
+
+  @if (loading()) {
+    <div class="loading-state">Loading items...</div>
+  } @else if (errorMessage()) {
+    <div class="alert alert-danger">{{ errorMessage() }}</div>
+  } @else if (items().length === 0) {
+    <div class="empty-state">
+      <p>No open items found matching your criteria.</p>
+    </div>
+  } @else {
+    <div class="items-grid">
+      @for (item of items(); track item._id) {
+        <div class="item-card">
+          <div class="card-header">
+            <span class="badge" [class.badge-lost]="item.itemType === 'Lost'" [class.badge-found]="item.itemType === 'Found'">
+              {{ item.itemType }}
+            </span>
+            <span class="status-badge status-open">
+              {{ item.status }}
+            </span>
+          </div>
+          
+          <div class="card-body">
+            <h3>{{ item.title }}</h3>
+            <p class="description">{{ item.description }}</p>
+            
+            <div class="details">
+              <p><strong>Category:</strong> {{ item.category }}</p>
+              <p><strong>Location:</strong> {{ item.location }}</p>
+              <p><strong>Date:</strong> {{ item.date | date:'mediumDate' }}</p>
+            </div>
+          </div>
+
+          <div class="card-footer">
+            <a [routerLink]="['/items', item._id]" class="btn-view">View Details</a>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

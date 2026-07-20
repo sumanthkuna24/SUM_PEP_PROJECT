@@ -2,6 +2,7 @@ import { Component, inject, signal, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { ItemService } from '../../services/item.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-itemdetails',
@@ -13,6 +14,7 @@ import { ItemService } from '../../services/item.service';
 export class Itemdetails implements OnInit {
   private route = inject(ActivatedRoute);
   private itemService = inject(ItemService);
+  public authService = inject(AuthService);
 
   item = signal<any | null>(null);
   loading = signal<boolean>(true);

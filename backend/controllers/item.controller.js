@@ -48,7 +48,25 @@ const getMyItems = async (req, res) => {
 // @access  Private
 const getAllOpenItems = async (req, res) => {
   try {
-    const items = await Item.find({ status: 'Open' }).sort({ createdAt: -1 });
+    const { search, category, itemType } = req.query;
+    const query = { status: 'Open' };
+
+    if (category) {
+      query.category = category;
+    }
+
+    if (itemType) {
+      query.itemType = itemType;
+    }
+
+    if (search) {
+      query.$or = [
+        { title: { $regex: search, $options: 'i' } },
+        { description: { $regex: search, $options: 'i' } }
+      ];
+    }
+
+    const items = await Item.find(query).sort({ createdAt: -1 });
     res.status(200).json(items);
   } catch (error) {
     console.error('Error fetching open items:', error);

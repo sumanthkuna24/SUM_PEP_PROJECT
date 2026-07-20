@@ -17,8 +17,16 @@ export class ItemService {
     return this.http.get<any[]>(`${this.apiUrl}/my-items`);
   }
 
-  getOpenItems(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl);
+  getOpenItems(filters?: { search?: string; category?: string; itemType?: string }): Observable<any[]> {
+    let params = {};
+    if (filters) {
+      const cleanedFilters: any = {};
+      if (filters.search) cleanedFilters.search = filters.search;
+      if (filters.category) cleanedFilters.category = filters.category;
+      if (filters.itemType) cleanedFilters.itemType = filters.itemType;
+      params = cleanedFilters;
+    }
+    return this.http.get<any[]>(this.apiUrl, { params });
   }
 
   getItemById(id: string): Observable<any> {
