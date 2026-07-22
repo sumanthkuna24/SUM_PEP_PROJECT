@@ -167,11 +167,50 @@ const deleteItem = async (req, res) => {
   }
 };
 
+// @desc    Get matching suggestions for a specific item
+// @route   GET /api/items/:id/suggestions
+// @access  Private
+const getItemSuggestions = async (req, res) => {
+  try {
+    const { findMatches } = require('../services/matching.service');
+    
+    const targetItem = await Item.findById(req.params.id);
+    if (!targetItem) {
+      return res.status(404).json({ message: 'Item not found' });
+    }
+
+    // Determine opposite item type to compare against
+    const oppositeType = targetItem.itemType === 'Lost' ? 'Found' : 'Lost';
+
+    // Find candidate open items of opposite type
+    const candidateItems = await Item.find({
+      itemType: oppositeType,
+      status: 'Open',
+      _id: { $ne: targetItem._id }
+    });
+
+    // Run matching algorithm with threshold 70
+    const suggestions = findMatches(targetItem, candidateItems, 70);
+
+    res.status(200).json({
+      item: targetItem,
+      suggestions
+    });
+  } catch (error) {
+    console.error('Error fetching item suggestions:', error);
+    if (error.kind === 'ObjectId') {
+      return res.status(404).json({ message: 'Item not found' });
+    }
+    res.status(500).json({ message: 'Server error fetching item suggestions' });
+  }
+};
+
 module.exports = {
   createItem,
   getMyItems,
   getAllOpenItems,
   getItemById,
   updateItem,
-  deleteItem
+  deleteItem,
+  getItemSuggestions
 };
