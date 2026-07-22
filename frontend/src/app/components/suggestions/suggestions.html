@@ -89,6 +89,22 @@
 
             <div class="card-footer">
               <a [routerLink]="['/items', suggestion.item._id]" class="btn-view">View Details</a>
+
+              @if (sentClaimIds().has(suggestion.item._id)) {
+                <span class="badge-claimed">✓ Claim Request Sent</span>
+              } @else if (activeClaimItemId() === suggestion.item._id) {
+                <div class="claim-form-box">
+                  <textarea [(ngModel)]="claimMessageText" placeholder="Optional message for owner (e.g. distinguishing features)..." rows="2"></textarea>
+                  <div class="claim-form-actions">
+                    <button (click)="submitClaim(suggestion.item._id)" [disabled]="submittingClaimId() === suggestion.item._id" class="btn-submit-claim">
+                      {{ submittingClaimId() === suggestion.item._id ? 'Sending...' : 'Submit Claim' }}
+                    </button>
+                    <button (click)="closeClaimForm()" class="btn-cancel-claim">Cancel</button>
+                  </div>
+                </div>
+              } @else {
+                <button (click)="openClaimForm(suggestion.item._id)" class="btn-send-claim">Send Claim Request</button>
+              }
             </div>
           </div>
         }

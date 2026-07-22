@@ -1,9 +1,138 @@
-<div class="placeholder-container">
-  <h2>Claim Requests</h2>
-  <p class="placeholder-description">
-    This page is a placeholder for managing claim requests. Here, you will be able to review requests sent to you for items you have found, as well as track the status of claim requests you've sent to other users.
-  </p>
-  <div class="placeholder-card">
-    <p>🚧 Module Coming Soon (Claims Sent / Claims Received & Approval Flow)</p>
+<div class="claims-page">
+  <div class="header-section">
+    <h2>Claim Requests</h2>
+    <p>Manage claims received for your items or track claims you've submitted.</p>
   </div>
+
+  <!-- Tab Navigation Bar -->
+  <div class="tab-bar">
+    <button (click)="setTab('received')" [class.active]="activeTab() === 'received'" class="tab-btn">
+      Received Claims ({{ receivedClaims().length }})
+    </button>
+    <button (click)="setTab('sent')" [class.active]="activeTab() === 'sent'" class="tab-btn">
+      Sent Claims ({{ sentClaims().length }})
+    </button>
+  </div>
+
+  @if (loading()) {
+    <div class="loading-state">Loading claim requests...</div>
+  } @else if (errorMessage()) {
+    <div class="alert alert-danger">{{ errorMessage() }}</div>
+  } @else {
+    <!-- Received Claims Tab View -->
+    @if (activeTab() === 'received') {
+      @if (receivedClaims().length === 0) {
+        <div class="empty-state">
+          <p>No received claim requests yet.</p>
+        </div>
+      } @else {
+        <div class="claims-list">
+          @for (claim of receivedClaims(); track claim._id) {
+            <div class="claim-card">
+              <div class="claim-header">
+                <span class="status-badge" 
+                      [class.status-pending]="claim.status === 'Pending'"
+                      [class.status-approved]="claim.status === 'Approved'"
+                      [class.status-rejected]="claim.status === 'Rejected'">
+                  {{ claim.status }}
+                </span>
+                <span class="claim-date">{{ claim.createdAt | date:'medium' }}</span>
+              </div>
+
+              <div class="claim-body">
+                <div class="item-info">
+                  <div class="item-thumb">
+                    @if (getImageUrl(claim.item?.image)) {
+                      <img [src]="getImageUrl(claim.item?.image)" [alt]="claim.item?.title" />
+                    } @else {
+                      <div class="thumb-placeholder">📷</div>
+                    }
+                  </div>
+                  <div class="item-details">
+                    <h4>{{ claim.item?.title }}</h4>
+                    <p class="sub-detail"><strong>Category:</strong> {{ claim.item?.category }} | <strong>Type:</strong> {{ claim.item?.itemType }}</p>
+                    <p class="sub-detail"><strong>Location:</strong> {{ claim.item?.location }}</p>
+                  </div>
+                </div>
+
+                <div class="user-info-box">
+                  <p><strong>Claimant:</strong> {{ claim.claimant?.name }} ({{ claim.claimant?.email }})</p>
+                  @if (claim.claimant?.phone) {
+                    <p><strong>Phone:</strong> {{ claim.claimant?.phone }}</p>
+                  }
+                  @if (claim.message) {
+                    <p class="claim-msg"><strong>Message:</strong> "{{ claim.message }}"</p>
+                  }
+                </div>
+              </div>
+
+              @if (claim.status === 'Pending') {
+                <div class="claim-footer">
+                  <button (click)="updateClaimStatus(claim._id, 'Approved')" 
+                          [disabled]="updatingClaimId() === claim._id" 
+                          class="btn-approve">
+                    Approve Claim
+                  </button>
+                  <button (click)="updateClaimStatus(claim._id, 'Rejected')" 
+                          [disabled]="updatingClaimId() === claim._id" 
+                          class="btn-reject">
+                    Reject Claim
+                  </button>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      }
+    }
+
+    <!-- Sent Claims Tab View -->
+    @if (activeTab() === 'sent') {
+      @if (sentClaims().length === 0) {
+        <div class="empty-state">
+          <p>You haven't submitted any claim requests yet.</p>
+        </div>
+      } @else {
+        <div class="claims-list">
+          @for (claim of sentClaims(); track claim._id) {
+            <div class="claim-card">
+              <div class="claim-header">
+                <span class="status-badge" 
+                      [class.status-pending]="claim.status === 'Pending'"
+                      [class.status-approved]="claim.status === 'Approved'"
+                      [class.status-rejected]="claim.status === 'Rejected'">
+                  {{ claim.status }}
+                </span>
+                <span class="claim-date">{{ claim.createdAt | date:'medium' }}</span>
+              </div>
+
+              <div class="claim-body">
+                <div class="item-info">
+                  <div class="item-thumb">
+                    @if (getImageUrl(claim.item?.image)) {
+                      <img [src]="getImageUrl(claim.item?.image)" [alt]="claim.item?.title" />
+                    } @else {
+                      <div class="thumb-placeholder">📷</div>
+                    }
+                  </div>
+                  <div class="item-details">
+                    <h4>{{ claim.item?.title }}</h4>
+                    <p class="sub-detail"><strong>Category:</strong> {{ claim.item?.category }} | <strong>Type:</strong> {{ claim.item?.itemType }}</p>
+                    <p class="sub-detail"><strong>Location:</strong> {{ claim.item?.location }}</p>
+                  </div>
+                </div>
+
+                <div class="user-info-box">
+                  <p><strong>Item Owner:</strong> {{ claim.owner?.name }} ({{ claim.owner?.email }})</p>
+                  @if (claim.message) {
+                    <p class="claim-msg"><strong>Your Message:</strong> "{{ claim.message }}"</p>
+                  }
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    }
+  }
 </div>
