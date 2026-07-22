@@ -1,0 +1,98 @@
+<div class="suggestions-page">
+  @if (loading()) {
+    <div class="loading-state">Calculating potential matches...</div>
+  } @else if (errorMessage()) {
+    <div class="alert alert-danger">{{ errorMessage() }}</div>
+    <div class="actions">
+      <a routerLink="/my-items" class="btn-back">Back to My Items</a>
+    </div>
+  } @else {
+    <div class="header-section">
+      <div class="header-top">
+        <h2>Suggested Matches</h2>
+        <a routerLink="/my-items" class="btn-back">Back to My Items</a>
+      </div>
+      @if (targetItem()) {
+        <p class="target-info">
+          Showing automated recommendations for your {{ targetItem()?.itemType }} item:
+          <strong>{{ targetItem()?.title }}</strong>
+        </p>
+      }
+    </div>
+
+    @if (suggestions().length === 0) {
+      <div class="empty-state">
+        <h3>No suitable matches found yet.</h3>
+        <p class="sub-text">Our algorithm checks category, location, keywords, and dates. Suggestions with a score of 70% or higher will appear here automatically.</p>
+      </div>
+    } @else {
+      <div class="suggestions-grid">
+        @for (suggestion of suggestions(); track suggestion.item._id) {
+          <div class="suggestion-card">
+            <div class="card-header">
+              <span class="badge" [class.badge-lost]="suggestion.item.itemType === 'Lost'" [class.badge-found]="suggestion.item.itemType === 'Found'">
+                {{ suggestion.item.itemType }}
+              </span>
+              <span class="match-score-badge" [class.score-high]="suggestion.totalScore >= 85" [class.score-medium]="suggestion.totalScore < 85">
+                {{ suggestion.totalScore }}% Match
+              </span>
+            </div>
+
+            <div class="card-image-container">
+              @if (getImageUrl(suggestion.item.image)) {
+                <img [src]="getImageUrl(suggestion.item.image)" [alt]="suggestion.item.title" class="card-img" />
+              } @else {
+                <div class="card-img-placeholder">
+                  <span class="placeholder-icon">📷</span>
+                  <span>No Image Provided</span>
+                </div>
+              }
+            </div>
+
+            <div class="card-body">
+              <h3>{{ suggestion.item.title }}</h3>
+              <p class="description">{{ suggestion.item.description }}</p>
+
+              <div class="details">
+                <p><strong>Category:</strong> {{ suggestion.item.category }}</p>
+                <p><strong>Location:</strong> {{ suggestion.item.location }}</p>
+                <p><strong>Date:</strong> {{ suggestion.item.date | date:'mediumDate' }}</p>
+              </div>
+
+              <!-- Score Breakdown Section -->
+              <div class="score-breakdown">
+                <h4>Match Score Breakdown</h4>
+                <div class="breakdown-grid">
+                  <div class="breakdown-item">
+                    <span class="label">Category</span>
+                    <span class="score-val">+{{ suggestion.scoreBreakdown.categoryScore }}</span>
+                  </div>
+                  <div class="breakdown-item">
+                    <span class="label">Keywords</span>
+                    <span class="score-val">+{{ suggestion.scoreBreakdown.keywordScore }}</span>
+                  </div>
+                  <div class="breakdown-item">
+                    <span class="label">Location</span>
+                    <span class="score-val">+{{ suggestion.scoreBreakdown.locationScore }}</span>
+                  </div>
+                  <div class="breakdown-item">
+                    <span class="label">Date</span>
+                    <span class="score-val">+{{ suggestion.scoreBreakdown.dateScore }}</span>
+                  </div>
+                </div>
+                <div class="breakdown-total">
+                  <span>Total Match Score:</span>
+                  <strong>{{ suggestion.totalScore }} / 100</strong>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-footer">
+              <a [routerLink]="['/items', suggestion.item._id]" class="btn-view">View Details</a>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  }
+</div>

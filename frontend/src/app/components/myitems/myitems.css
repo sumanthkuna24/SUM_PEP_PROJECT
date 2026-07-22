@@ -206,3 +206,12 @@
 .btn-delete:hover {
   background-color: #bd2130;
 }
+
+.btn-suggestions {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn-suggestions:hover {
+  background-color: #218838;
+}

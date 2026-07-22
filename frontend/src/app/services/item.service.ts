@@ -41,6 +41,10 @@ export class ItemService {
     return this.http.delete<any>(`${this.apiUrl}/${id}`);
   }
 
+  getItemSuggestions(id: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${id}/suggestions`);
+  }
+
   getImageUrl(imagePath: string | null | undefined): string | null {
     if (!imagePath) return null;
     if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {

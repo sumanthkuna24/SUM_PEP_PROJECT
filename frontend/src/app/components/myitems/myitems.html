@@ -48,6 +48,7 @@
           </div>
           
           <div class="card-footer">
+            <a [routerLink]="['/items', item._id, 'suggestions']" class="btn-action btn-suggestions">Suggestions</a>
             <a [routerLink]="['/items', item._id]" class="btn-action btn-view">View</a>
             <a [routerLink]="['/items', item._id, 'edit']" class="btn-action btn-edit">Edit</a>
             <button (click)="deleteItem(item._id)" class="btn-action btn-delete">Delete</button>
