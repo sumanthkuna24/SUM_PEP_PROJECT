@@ -77,6 +77,17 @@
           </div>
         </div>
 
+        <div class="form-group">
+          <label for="image">Replace Item Image (Optional)</label>
+          @if (existingImage()) {
+            <div class="current-image-preview">
+              <p class="small-label">Current Image:</p>
+              <img [src]="getImageUrl(existingImage())" alt="Current Item Image" class="image-thumbnail" />
+            </div>
+          }
+          <input type="file" id="image" (change)="onFileSelected($event)" accept="image/jpeg,image/jpg,image/png,image/webp" />
+        </div>
+
         <div class="button-row">
           <a routerLink="/my-items" class="btn-cancel">Cancel</a>
           <button type="submit" [disabled]="editForm.invalid" class="btn-submit">Save Changes</button>

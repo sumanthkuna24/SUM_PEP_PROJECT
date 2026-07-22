@@ -20,6 +20,10 @@ export class Itemdetails implements OnInit {
   loading = signal<boolean>(true);
   errorMessage = signal<string>('');
 
+  getImageUrl(path: string | null | undefined): string | null {
+    return this.itemService.getImageUrl(path);
+  }
+
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {

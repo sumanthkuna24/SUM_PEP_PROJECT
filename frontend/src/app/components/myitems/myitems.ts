@@ -17,6 +17,10 @@ export class Myitems implements OnInit {
   errorMessage = signal<string>('');
   loading = signal<boolean>(true);
 
+  getImageUrl(path: string | null | undefined): string | null {
+    return this.itemService.getImageUrl(path);
+  }
+
   ngOnInit() {
     this.fetchMyItems();
   }

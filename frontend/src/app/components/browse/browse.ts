@@ -19,6 +19,10 @@ export class Browse implements OnInit {
   loading = signal<boolean>(true);
   errorMessage = signal<string>('');
 
+  getImageUrl(path: string | null | undefined): string | null {
+    return this.itemService.getImageUrl(path);
+  }
+
   filterForm: FormGroup = this.fb.group({
     search: [''],
     category: [''],

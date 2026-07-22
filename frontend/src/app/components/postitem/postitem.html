@@ -74,6 +74,11 @@
         </div>
       </div>
 
+      <div class="form-group">
+        <label for="image">Item Image (Optional)</label>
+        <input type="file" id="image" (change)="onFileSelected($event)" accept="image/jpeg,image/jpg,image/png,image/webp" />
+      </div>
+
       <button type="submit" [disabled]="postForm.invalid" class="btn-submit">Submit Post</button>
     </form>
   </div>

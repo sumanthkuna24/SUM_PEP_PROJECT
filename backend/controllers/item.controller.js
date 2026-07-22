@@ -11,6 +11,8 @@ const createItem = async (req, res) => {
       return res.status(400).json({ message: 'All fields are required' });
     }
 
+    const imagePath = req.file ? '/uploads/' + req.file.filename : '';
+
     const item = new Item({
       title,
       description,
@@ -18,6 +20,7 @@ const createItem = async (req, res) => {
       itemType,
       location,
       date,
+      image: imagePath,
       owner: req.user._id // bound from the verified JWT via auth middleware
     });
 
@@ -122,6 +125,10 @@ const updateItem = async (req, res) => {
     item.itemType = itemType;
     item.location = location;
     item.date = date;
+
+    if (req.file) {
+      item.image = '/uploads/' + req.file.filename;
+    }
 
     const updatedItem = await item.save();
     res.status(200).json({ message: 'Item updated successfully', item: updatedItem });

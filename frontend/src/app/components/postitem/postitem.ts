@@ -27,6 +27,15 @@ export class Postitem {
     date: ['', [Validators.required]]
   });
 
+  selectedFile: File | null = null;
+
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+    }
+  }
+
   inValid(field: string): boolean {
     const control = this.postForm.get(field);
     return !!(control && control.invalid && (control.dirty || control.touched));
@@ -45,7 +54,19 @@ export class Postitem {
     this.errorMessage.set('');
     this.successMessage.set('');
 
-    this.itemService.createItem(this.postForm.value).subscribe({
+    const formData = new FormData();
+    formData.append('title', this.postForm.get('title')?.value);
+    formData.append('description', this.postForm.get('description')?.value);
+    formData.append('category', this.postForm.get('category')?.value);
+    formData.append('itemType', this.postForm.get('itemType')?.value);
+    formData.append('location', this.postForm.get('location')?.value);
+    formData.append('date', this.postForm.get('date')?.value);
+
+    if (this.selectedFile) {
+      formData.append('image', this.selectedFile);
+    }
+
+    this.itemService.createItem(formData).subscribe({
       next: (res) => {
         this.successMessage.set('Post created successfully!');
         setTimeout(() => {

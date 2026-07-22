@@ -21,6 +21,17 @@
         <h2>{{ item().title }}</h2>
         <hr />
         
+        <div class="details-image-container">
+          @if (getImageUrl(item().image)) {
+            <img [src]="getImageUrl(item().image)" [alt]="item().title" class="details-img" />
+          } @else {
+            <div class="details-img-placeholder">
+              <span class="placeholder-icon">📷</span>
+              <span>No Image Available</span>
+            </div>
+          }
+        </div>
+
         <div class="field-group">
           <label>Description</label>
           <p class="description-text">{{ item().description }}</p>

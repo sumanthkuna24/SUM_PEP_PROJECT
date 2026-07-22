@@ -40,4 +40,13 @@ export class ItemService {
   deleteItem(id: string): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/${id}`);
   }
+
+  getImageUrl(imagePath: string | null | undefined): string | null {
+    if (!imagePath) return null;
+    if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+      return imagePath;
+    }
+    const cleanPath = imagePath.startsWith('/') ? imagePath : `/${imagePath}`;
+    return `http://localhost:5000${cleanPath}`;
+  }
 }

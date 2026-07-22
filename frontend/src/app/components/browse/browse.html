@@ -51,6 +51,17 @@
               {{ item.status }}
             </span>
           </div>
+
+          <div class="card-image-container">
+            @if (getImageUrl(item.image)) {
+              <img [src]="getImageUrl(item.image)" [alt]="item.title" class="card-img" />
+            } @else {
+              <div class="card-img-placeholder">
+                <span class="placeholder-icon">📷</span>
+                <span>No Image Provided</span>
+              </div>
+            }
+          </div>
           
           <div class="card-body">
             <h3>{{ item.title }}</h3>

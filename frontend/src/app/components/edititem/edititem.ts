@@ -30,6 +30,9 @@ export class Edititem implements OnInit {
     date: ['', [Validators.required]]
   });
 
+  existingImage = signal<string>('');
+  selectedFile: File | null = null;
+
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
@@ -50,6 +53,8 @@ export class Edititem implements OnInit {
           formattedDate = new Date(data.date).toISOString().substring(0, 10);
         }
         
+        this.existingImage.set(data.image || '');
+
         this.editForm.patchValue({
           title: data.title,
           description: data.description,
@@ -68,6 +73,13 @@ export class Edititem implements OnInit {
     });
   }
 
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+    }
+  }
+
   inValid(field: string): boolean {
     const control = this.editForm.get(field);
     return !!(control && control.invalid && (control.dirty || control.touched));
@@ -75,6 +87,10 @@ export class Edititem implements OnInit {
 
   get f() {
     return this.editForm.controls;
+  }
+
+  getImageUrl(imagePath: string): string | null {
+    return this.itemService.getImageUrl(imagePath);
   }
 
   onSubmit() {
@@ -86,7 +102,19 @@ export class Edititem implements OnInit {
     this.errorMessage.set('');
     this.successMessage.set('');
 
-    this.itemService.updateItem(this.itemId, this.editForm.value).subscribe({
+    const formData = new FormData();
+    formData.append('title', this.editForm.get('title')?.value);
+    formData.append('description', this.editForm.get('description')?.value);
+    formData.append('category', this.editForm.get('category')?.value);
+    formData.append('itemType', this.editForm.get('itemType')?.value);
+    formData.append('location', this.editForm.get('location')?.value);
+    formData.append('date', this.editForm.get('date')?.value);
+
+    if (this.selectedFile) {
+      formData.append('image', this.selectedFile);
+    }
+
+    this.itemService.updateItem(this.itemId, formData).subscribe({
       next: (res) => {
         this.successMessage.set('Changes saved successfully!');
         setTimeout(() => {
