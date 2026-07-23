@@ -1,10 +1,13 @@
 <div class="details-container">
   @if (loading()) {
-    <div class="loading-state">Loading item details...</div>
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading item details...</p>
+    </div>
   } @else if (errorMessage()) {
     <div class="alert alert-danger">{{ errorMessage() }}</div>
     <div class="actions">
-      <a routerLink="/my-items" class="btn-back">Back to My Items</a>
+      <a routerLink="/browse" class="btn-back">Back to Browse</a>
     </div>
   } @else if (item()) {
     <div class="details-card">
@@ -12,7 +15,7 @@
         <span class="badge" [class.badge-lost]="item().itemType === 'Lost'" [class.badge-found]="item().itemType === 'Found'">
           {{ item().itemType }}
         </span>
-        <span class="status-badge" [class.status-open]="item().status === 'Open'" [class.status-resolved]="item().status === 'Resolved'">
+        <span class="status-badge" [class.status-open]="item().status === 'Open'" [class.status-handover]="item().status === 'Awaiting Handover'" [class.status-resolved]="item().status === 'Resolved'">
           Status: {{ item().status }}
         </span>
       </div>
@@ -59,7 +62,7 @@
 
       <div class="card-footer">
         <a routerLink="/browse" class="btn-back">Back to Browse</a>
-        @if (item().owner === authService.currentUser()?._id) {
+        @if (item().owner === authService.currentUser()?._id || item().owner === authService.currentUser()?.id) {
           <a [routerLink]="['/items', item()._id, 'edit']" class="btn-edit">Edit Item</a>
         }
       </div>

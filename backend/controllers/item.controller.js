@@ -1,4 +1,5 @@
 const Item = require('../models/item.model');
+const { findMatches } = require('../services/matching.service');
 
 // @desc    Create a new item (Lost/Found)
 // @route   POST /api/items
@@ -172,11 +173,17 @@ const deleteItem = async (req, res) => {
 // @access  Private
 const getItemSuggestions = async (req, res) => {
   try {
-    const { findMatches } = require('../services/matching.service');
-    
     const targetItem = await Item.findById(req.params.id);
     if (!targetItem) {
       return res.status(404).json({ message: 'Item not found' });
+    }
+
+    // Resolved or Awaiting Handover items do not generate recommendations
+    if (targetItem.status !== 'Open') {
+      return res.status(200).json({
+        item: targetItem,
+        suggestions: []
+      });
     }
 
     // Determine opposite item type to compare against
@@ -205,6 +212,39 @@ const getItemSuggestions = async (req, res) => {
   }
 };
 
+// @desc    Mark an item as resolved (handover completed - owner only)
+// @route   PUT /api/items/:id/resolve
+// @access  Private
+const resolveItem = async (req, res) => {
+  try {
+    const item = await Item.findById(req.params.id);
+    if (!item) {
+      return res.status(404).json({ message: 'Item not found' });
+    }
+
+    // Verify ownership
+    if (item.owner.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ message: 'Not authorized to resolve this item' });
+    }
+
+    // Ensure item is in Awaiting Handover status
+    if (item.status !== 'Awaiting Handover') {
+      return res.status(400).json({ message: 'Only items in Awaiting Handover status can be marked as resolved' });
+    }
+
+    item.status = 'Resolved';
+    const updatedItem = await item.save();
+
+    res.status(200).json({ message: 'Item resolved successfully', item: updatedItem });
+  } catch (error) {
+    console.error('Error resolving item:', error);
+    if (error.kind === 'ObjectId') {
+      return res.status(404).json({ message: 'Item not found' });
+    }
+    res.status(500).json({ message: 'Server error resolving item' });
+  }
+};
+
 module.exports = {
   createItem,
   getMyItems,
@@ -212,5 +252,6 @@ module.exports = {
   getItemById,
   updateItem,
   deleteItem,
-  getItemSuggestions
+  getItemSuggestions,
+  resolveItem
 };

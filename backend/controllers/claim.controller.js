@@ -46,6 +46,9 @@ const sendClaim = async (req, res) => {
     res.status(201).json({ message: 'Claim request submitted successfully', claim });
   } catch (error) {
     console.error('Error submitting claim:', error);
+    if (error.kind === 'ObjectId') {
+      return res.status(404).json({ message: 'Item not found' });
+    }
     res.status(500).json({ message: 'Server error submitting claim request' });
   }
 };
@@ -107,6 +110,15 @@ const updateClaimStatus = async (req, res) => {
 
     claim.status = status;
     await claim.save();
+
+    // If claim is approved, transition item status to 'Awaiting Handover'
+    if (status === 'Approved') {
+      const item = await Item.findById(claim.item);
+      if (item && item.status === 'Open') {
+        item.status = 'Awaiting Handover';
+        await item.save();
+      }
+    }
 
     const updatedClaim = await Claim.findById(claim._id)
       .populate('item')

@@ -35,7 +35,7 @@ const itemSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['Open', 'Resolved'],
+    enum: ['Open', 'Awaiting Handover', 'Resolved'],
     default: 'Open'
   },
   owner: {
