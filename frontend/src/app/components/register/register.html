@@ -56,7 +56,9 @@
         }
       </div>
 
-      <button type="submit" [disabled]="registerForm.invalid">Register</button>
+      <button type="submit" [disabled]="registerForm.invalid || submitting()">
+        {{ submitting() ? 'Creating Account...' : 'Register' }}
+      </button>
     </form>
 
     <p class="auth-footer">

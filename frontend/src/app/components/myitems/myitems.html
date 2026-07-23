@@ -4,13 +4,24 @@
     <p>View and manage all lost and found reports you've posted on campus.</p>
   </div>
 
-  @if (loading()) {
-    <div class="loading-state">Loading your items...</div>
-  } @else if (errorMessage()) {
+  @if (successMessage()) {
+    <div class="alert alert-success">{{ successMessage() }}</div>
+  }
+  @if (errorMessage()) {
     <div class="alert alert-danger">{{ errorMessage() }}</div>
+  }
+
+  @if (loading()) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading your reported items...</p>
+    </div>
   } @else if (items().length === 0) {
     <div class="empty-state">
-      <p>You haven't reported any items yet.</p>
+      <div class="empty-icon">📦</div>
+      <h3>No reported items found</h3>
+      <p class="empty-desc">You haven't reported any lost or found items yet.</p>
+      <a routerLink="/post-item" class="btn-create-new">Post New Item</a>
     </div>
   } @else {
     <div class="items-grid">
@@ -20,7 +31,7 @@
             <span class="badge" [class.badge-lost]="item.itemType === 'Lost'" [class.badge-found]="item.itemType === 'Found'">
               {{ item.itemType }}
             </span>
-            <span class="status-badge" [class.status-open]="item.status === 'Open'" [class.status-resolved]="item.status === 'Resolved'">
+            <span class="status-badge" [class.status-open]="item.status === 'Open'" [class.status-handover]="item.status === 'Awaiting Handover'" [class.status-resolved]="item.status === 'Resolved'">
               {{ item.status }}
             </span>
           </div>
@@ -48,6 +59,9 @@
           </div>
           
           <div class="card-footer">
+            @if (item.status === 'Awaiting Handover') {
+              <button (click)="resolveItem(item._id)" class="btn-action btn-resolve">Mark as Resolved</button>
+            }
             <a [routerLink]="['/items', item._id, 'suggestions']" class="btn-action btn-suggestions">Suggestions</a>
             <a [routerLink]="['/items', item._id]" class="btn-action btn-view">View</a>
             <a [routerLink]="['/items', item._id, 'edit']" class="btn-action btn-edit">Edit</a>

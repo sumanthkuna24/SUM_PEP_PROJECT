@@ -22,6 +22,7 @@ body {
   padding: 10px 20px;
   height: 50px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  z-index: 10;
 }
 
 .app-navbar .logo {
@@ -48,6 +49,7 @@ body {
   padding: 6px 12px;
   font-size: 13px;
   cursor: pointer;
+  font-weight: bold;
 }
 
 .btn-logout-small:hover {
@@ -65,6 +67,7 @@ body {
   background-color: #212529;
   color: #adb5bd;
   padding-top: 15px;
+  flex-shrink: 0;
 }
 
 .app-sidebar nav ul {
@@ -100,4 +103,53 @@ body {
   padding: 25px;
   overflow-y: auto;
   background-color: #f8f9fa;
+}
+
+/* Mobile & Tablet Responsive Layout */
+@media (max-width: 768px) {
+  .app-body {
+    flex-direction: column;
+    overflow: auto;
+  }
+  
+  .app-sidebar {
+    width: 100%;
+    padding-top: 0;
+  }
+
+  .app-sidebar nav ul {
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    border-bottom: 1px solid #343a40;
+  }
+
+  .app-sidebar nav ul li {
+    flex: 1;
+  }
+
+  .app-sidebar nav ul li a {
+    padding: 12px 14px;
+    font-size: 13px;
+    text-align: center;
+    border-left: none;
+    border-bottom: 3px solid transparent;
+  }
+
+  .app-sidebar nav ul li a.active {
+    border-left: none;
+    border-bottom-color: #007bff;
+  }
+
+  .app-navbar {
+    padding: 10px 15px;
+  }
+
+  .app-navbar .user-details {
+    display: none;
+  }
+
+  .app-content {
+    padding: 15px;
+  }
 }

@@ -17,6 +17,7 @@ export class Postitem {
 
   errorMessage = signal<string>('');
   successMessage = signal<string>('');
+  submitting = signal<boolean>(false);
 
   postForm: FormGroup = this.fb.group({
     title: ['', [Validators.required]],
@@ -53,6 +54,7 @@ export class Postitem {
 
     this.errorMessage.set('');
     this.successMessage.set('');
+    this.submitting.set(true);
 
     const formData = new FormData();
     formData.append('title', this.postForm.get('title')?.value);
@@ -68,12 +70,14 @@ export class Postitem {
 
     this.itemService.createItem(formData).subscribe({
       next: (res) => {
+        this.submitting.set(false);
         this.successMessage.set('Post created successfully!');
         setTimeout(() => {
           this.router.navigate(['/my-items']);
-        }, 1500);
+        }, 1200);
       },
       error: (err) => {
+        this.submitting.set(false);
         this.errorMessage.set(err.error?.message || 'Error creating post');
       }
     });

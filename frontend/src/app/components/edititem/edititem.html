@@ -1,6 +1,9 @@
 <div class="edit-item-container">
   @if (loading()) {
-    <div class="loading-state">Loading item information...</div>
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading item information...</p>
+    </div>
   } @else {
     <div class="edit-card">
       <h2>Edit Item Post</h2>
@@ -90,7 +93,9 @@
 
         <div class="button-row">
           <a routerLink="/my-items" class="btn-cancel">Cancel</a>
-          <button type="submit" [disabled]="editForm.invalid" class="btn-submit">Save Changes</button>
+          <button type="submit" [disabled]="editForm.invalid || submitting()" class="btn-submit">
+            {{ submitting() ? 'Saving...' : 'Save Changes' }}
+          </button>
         </div>
       </form>
     </div>

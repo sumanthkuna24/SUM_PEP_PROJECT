@@ -20,6 +20,7 @@ export class Claims implements OnInit {
   sentClaims = signal<any[]>([]);
   loading = signal<boolean>(true);
   errorMessage = signal<string>('');
+  successMessage = signal<string>('');
   updatingClaimId = signal<string | null>(null);
 
   ngOnInit() {
@@ -59,16 +60,22 @@ export class Claims implements OnInit {
 
   updateClaimStatus(claimId: string, status: 'Approved' | 'Rejected') {
     this.updatingClaimId.set(claimId);
+    this.errorMessage.set('');
+    this.successMessage.set('');
+
     this.claimService.updateClaimStatus(claimId, status).subscribe({
       next: (res) => {
+        this.successMessage.set(`Claim request ${status.toLowerCase()} successfully!`);
         this.receivedClaims.update(prev =>
           prev.map(c => (c._id === claimId ? { ...c, status } : c))
         );
         this.updatingClaimId.set(null);
+        setTimeout(() => this.successMessage.set(''), 3000);
       },
       error: (err) => {
-        alert(err.error?.message || 'Error updating claim status');
+        this.errorMessage.set(err.error?.message || 'Error updating claim status');
         this.updatingClaimId.set(null);
+        setTimeout(() => this.errorMessage.set(''), 3000);
       }
     });
   }

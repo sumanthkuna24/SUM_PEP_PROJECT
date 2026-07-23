@@ -1,6 +1,9 @@
 <div class="suggestions-page">
   @if (loading()) {
-    <div class="loading-state">Calculating potential matches...</div>
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Calculating potential matches...</p>
+    </div>
   } @else if (errorMessage()) {
     <div class="alert alert-danger">{{ errorMessage() }}</div>
     <div class="actions">
@@ -22,7 +25,8 @@
 
     @if (suggestions().length === 0) {
       <div class="empty-state">
-        <h3>No suitable matches found yet.</h3>
+        <div class="empty-icon">✨</div>
+        <h3>No suitable matches found yet</h3>
         <p class="sub-text">Our algorithm checks category, location, keywords, and dates. Suggestions with a score of 70% or higher will appear here automatically.</p>
       </div>
     } @else {

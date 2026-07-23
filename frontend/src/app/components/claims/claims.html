@@ -4,6 +4,13 @@
     <p>Manage claims received for your items or track claims you've submitted.</p>
   </div>
 
+  @if (successMessage()) {
+    <div class="alert alert-success">{{ successMessage() }}</div>
+  }
+  @if (errorMessage()) {
+    <div class="alert alert-danger">{{ errorMessage() }}</div>
+  }
+
   <!-- Tab Navigation Bar -->
   <div class="tab-bar">
     <button (click)="setTab('received')" [class.active]="activeTab() === 'received'" class="tab-btn">
@@ -15,15 +22,18 @@
   </div>
 
   @if (loading()) {
-    <div class="loading-state">Loading claim requests...</div>
-  } @else if (errorMessage()) {
-    <div class="alert alert-danger">{{ errorMessage() }}</div>
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading claim requests...</p>
+    </div>
   } @else {
     <!-- Received Claims Tab View -->
     @if (activeTab() === 'received') {
       @if (receivedClaims().length === 0) {
         <div class="empty-state">
-          <p>No received claim requests yet.</p>
+          <div class="empty-icon">📥</div>
+          <h3>No received claims</h3>
+          <p class="empty-desc">You have not received any claim requests for your reported items yet.</p>
         </div>
       } @else {
         <div class="claims-list">
@@ -71,12 +81,12 @@
                   <button (click)="updateClaimStatus(claim._id, 'Approved')" 
                           [disabled]="updatingClaimId() === claim._id" 
                           class="btn-approve">
-                    Approve Claim
+                    {{ updatingClaimId() === claim._id ? 'Updating...' : 'Approve Claim' }}
                   </button>
                   <button (click)="updateClaimStatus(claim._id, 'Rejected')" 
                           [disabled]="updatingClaimId() === claim._id" 
                           class="btn-reject">
-                    Reject Claim
+                    {{ updatingClaimId() === claim._id ? 'Updating...' : 'Reject Claim' }}
                   </button>
                 </div>
               }
@@ -90,7 +100,9 @@
     @if (activeTab() === 'sent') {
       @if (sentClaims().length === 0) {
         <div class="empty-state">
-          <p>You haven't submitted any claim requests yet.</p>
+          <div class="empty-icon">📤</div>
+          <h3>No sent claims</h3>
+          <p class="empty-desc">You haven't submitted any claim requests for suggested matches yet.</p>
         </div>
       } @else {
         <div class="claims-list">

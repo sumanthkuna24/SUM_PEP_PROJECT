@@ -17,6 +17,7 @@ export class Register {
 
   errorMessage = signal<string>('');
   successMessage = signal<string>('');
+  submitting = signal<boolean>(false);
 
   registerForm: FormGroup = this.fb.group({
     name: ['', [Validators.required]],
@@ -42,15 +43,18 @@ export class Register {
 
     this.errorMessage.set('');
     this.successMessage.set('');
+    this.submitting.set(true);
 
     this.authService.register(this.registerForm.value).subscribe({
       next: (res) => {
+        this.submitting.set(false);
         this.successMessage.set('Registration successful! Redirecting to login...');
         setTimeout(() => {
           this.router.navigate(['/login']);
-        }, 1500);
+        }, 1200);
       },
       error: (err) => {
+        this.submitting.set(false);
         this.errorMessage.set(err.error?.message || 'Registration failed');
       }
     });

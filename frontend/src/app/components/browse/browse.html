@@ -32,12 +32,17 @@
   </form>
 
   @if (loading()) {
-    <div class="loading-state">Loading items...</div>
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Searching open items...</p>
+    </div>
   } @else if (errorMessage()) {
     <div class="alert alert-danger">{{ errorMessage() }}</div>
   } @else if (items().length === 0) {
     <div class="empty-state">
-      <p>No open items found matching your criteria.</p>
+      <div class="empty-icon">🔎</div>
+      <h3>No items found</h3>
+      <p class="empty-desc">No active items matched your search filters. Try adjusting your query or category.</p>
     </div>
   } @else {
     <div class="items-grid">

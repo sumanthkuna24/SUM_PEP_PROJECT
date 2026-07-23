@@ -20,6 +20,7 @@ export class Edititem implements OnInit {
   errorMessage = signal<string>('');
   successMessage = signal<string>('');
   loading = signal<boolean>(true);
+  submitting = signal<boolean>(false);
 
   editForm: FormGroup = this.fb.group({
     title: ['', [Validators.required]],
@@ -47,7 +48,6 @@ export class Edititem implements OnInit {
   fetchItemDetails(id: string) {
     this.itemService.getItemById(id).subscribe({
       next: (data) => {
-        // Format date string to YYYY-MM-DD for date input binding
         let formattedDate = '';
         if (data.date) {
           formattedDate = new Date(data.date).toISOString().substring(0, 10);
@@ -101,6 +101,7 @@ export class Edititem implements OnInit {
 
     this.errorMessage.set('');
     this.successMessage.set('');
+    this.submitting.set(true);
 
     const formData = new FormData();
     formData.append('title', this.editForm.get('title')?.value);
@@ -116,12 +117,14 @@ export class Edititem implements OnInit {
 
     this.itemService.updateItem(this.itemId, formData).subscribe({
       next: (res) => {
+        this.submitting.set(false);
         this.successMessage.set('Changes saved successfully!');
         setTimeout(() => {
           this.router.navigate(['/my-items']);
-        }, 1500);
+        }, 1200);
       },
       error: (err) => {
+        this.submitting.set(false);
         this.errorMessage.set(err.error?.message || 'Failed to save changes.');
       }
     });

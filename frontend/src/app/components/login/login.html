@@ -36,7 +36,9 @@
         }
       </div>
 
-      <button type="submit" [disabled]="loginForm.invalid">Login</button>
+      <button type="submit" [disabled]="loginForm.invalid || submitting()">
+        {{ submitting() ? 'Logging in...' : 'Login' }}
+      </button>
     </form>
 
     <p class="auth-footer">

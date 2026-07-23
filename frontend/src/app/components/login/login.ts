@@ -17,6 +17,7 @@ export class Login {
 
   errorMessage = signal<string>('');
   successMessage = signal<string>('');
+  submitting = signal<boolean>(false);
 
   loginForm: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
@@ -40,15 +41,18 @@ export class Login {
 
     this.errorMessage.set('');
     this.successMessage.set('');
+    this.submitting.set(true);
 
     this.authService.login(this.loginForm.value).subscribe({
       next: (res) => {
+        this.submitting.set(false);
         this.successMessage.set('Login successful!');
         setTimeout(() => {
           this.router.navigate(['/dashboard']);
         }, 1000);
       },
       error: (err) => {
+        this.submitting.set(false);
         this.errorMessage.set(err.error?.message || 'Invalid credentials');
       }
     });

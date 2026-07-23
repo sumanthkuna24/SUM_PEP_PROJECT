@@ -1,32 +1,88 @@
 <div class="dashboard-page">
   <div class="dashboard-header">
     <h1>Welcome back, {{ authService.currentUser()?.name }}!</h1>
-    <p class="dashboard-desc">From here, you will manage all your lost and found activities on campus.</p>
+    <p class="dashboard-desc">Manage your lost and found activities, view matching suggestions, and handle claims on campus.</p>
   </div>
 
-  <div class="metrics-grid">
-    <div class="metric-card">
-      <h3>Total Posts</h3>
-      <p class="metric-value">0</p>
-      <span class="metric-subtitle">All reported items</span>
+  @if (loading()) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading dashboard metrics...</p>
+    </div>
+  } @else {
+    <!-- Metrics Grid -->
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="card-icon icon-total">📋</div>
+        <div class="card-info">
+          <h3>Total Items Posted</h3>
+          <p class="metric-value">{{ totalItems() }}</p>
+          <span class="metric-subtitle">All your reported items</span>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="card-icon icon-open">🔍</div>
+        <div class="card-info">
+          <h3>Open Items</h3>
+          <p class="metric-value text-primary">{{ openItems() }}</p>
+          <span class="metric-subtitle">Currently active reports</span>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="card-icon icon-handover">🤝</div>
+        <div class="card-info">
+          <h3>Awaiting Handover</h3>
+          <p class="metric-value text-warning">{{ handoverItems() }}</p>
+          <span class="metric-subtitle">Claim approved, awaiting return</span>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="card-icon icon-resolved">✅</div>
+        <div class="card-info">
+          <h3>Resolved Items</h3>
+          <p class="metric-value text-success">{{ resolvedItems() }}</p>
+          <span class="metric-subtitle">Successfully returned</span>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="card-icon icon-claims">📩</div>
+        <div class="card-info">
+          <h3>Pending Claims</h3>
+          <p class="metric-value text-danger">{{ pendingClaims() }}</p>
+          <span class="metric-subtitle">Awaiting your review</span>
+        </div>
+      </div>
     </div>
 
-    <div class="metric-card">
-      <h3>Open Items</h3>
-      <p class="metric-value text-primary">0</p>
-      <span class="metric-subtitle">Currently active</span>
+    <!-- Quick Shortcuts -->
+    <div class="shortcuts-section">
+      <h2>Quick Actions</h2>
+      <div class="shortcuts-grid">
+        <a routerLink="/post-item" class="shortcut-card btn-shortcut-post">
+          <span class="shortcut-icon">➕</span>
+          <span class="shortcut-title">Post New Item</span>
+          <span class="shortcut-desc">Report a lost or found item on campus</span>
+        </a>
+        <a routerLink="/browse" class="shortcut-card btn-shortcut-browse">
+          <span class="shortcut-icon">🔎</span>
+          <span class="shortcut-title">Browse Open Items</span>
+          <span class="shortcut-desc">Search public campus listings</span>
+        </a>
+        <a routerLink="/my-items" class="shortcut-card btn-shortcut-myitems">
+          <span class="shortcut-icon">📦</span>
+          <span class="shortcut-title">My Reported Items</span>
+          <span class="shortcut-desc">Check suggestions & resolve handovers</span>
+        </a>
+        <a routerLink="/claims" class="shortcut-card btn-shortcut-claims">
+          <span class="shortcut-icon">📨</span>
+          <span class="shortcut-title">Claim Requests</span>
+          <span class="shortcut-desc">Review received and sent claims</span>
+        </a>
+      </div>
     </div>
-
-    <div class="metric-card">
-      <h3>Matched Items</h3>
-      <p class="metric-value text-warning">0</p>
-      <span class="metric-subtitle">Auto-detected matches</span>
-    </div>
-
-    <div class="metric-card">
-      <h3>Resolved Items</h3>
-      <p class="metric-value text-success">0</p>
-      <span class="metric-subtitle">Items successfully returned</span>
-    </div>
-  </div>
+  }
 </div>

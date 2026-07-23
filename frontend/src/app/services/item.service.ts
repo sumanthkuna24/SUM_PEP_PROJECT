@@ -45,6 +45,10 @@ export class ItemService {
     return this.http.get<any>(`${this.apiUrl}/${id}/suggestions`);
   }
 
+  resolveItem(id: string): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${id}/resolve`, {});
+  }
+
   getImageUrl(imagePath: string | null | undefined): string | null {
     if (!imagePath) return null;
     if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
